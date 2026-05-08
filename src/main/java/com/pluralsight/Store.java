@@ -15,15 +15,16 @@ import java.util.Scanner;
  */
 public class Store {
 
+    // Create lists for inventory and the shopping cart
+    private static Map<String, Product> inventory = new HashMap<>();
+    private static Map<Product, Integer> cart = new HashMap<>();
+    private static final String FILE_NAME = "products.csv";
+
     public static void main(String[] args) {
 
-        // Create lists for inventory and the shopping cart
-        ArrayList<Product> inventory = new ArrayList<>();
-        Map<Product, Integer> cart = new HashMap<>();
-        final String FILE_NAME = "products.csv";
 
         // Load inventory from the data file (pipe-delimited: id|name|price)
-        loadInventory("products.csv", inventory);
+        loadInventory("products.csv");
 
         // Main menu loop
         Scanner scanner = new Scanner(System.in);
@@ -61,7 +62,7 @@ public class Store {
      * Example line:
      * A17|Wireless Mouse|19.99
      */
-    public static void loadInventory(String fileName, ArrayList<Product> inventory) {
+    public static void loadInventory(String fileName) {
 
         File file = new File(fileName);
 
@@ -95,7 +96,7 @@ public class Store {
                     String name = values[1];
                     double transactionAmount = parseDouble(values[2]);
 
-                    inventory.add(new Product(productID, name, transactionAmount));
+                    inventory.put(productID, new Product(productID, name, transactionAmount));
                 }
                 // Catches all general errors within each transaction.
                 catch (Exception e) {
@@ -112,17 +113,57 @@ public class Store {
      * Displays all products and lets the user add one to the cart.
      * Typing X returns to the main menu.
      */
-    public static void productsScreen(ArrayList<Product> inventory,
-                                      ArrayList<Product> cart,
+    public static void productsScreen(Map<String, Product> inventory,
+                                      Map<Product, Integer> cart,
                                       Scanner scanner) {
-        System.out.println();
+        while (true) {
+            System.out.println("Welcome to the Product Screen!");
+            System.out.println("1. View All Products");
+            System.out.println("2. Search by Product ID");
+            System.out.println("3. Back to Home Screen");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> {
+                    System.out.println("All Products");
+                    for (Map.Entry<String, Product> entry : inventory.entrySet()) {
+                        System.out.println(entry.getValue());
+                    }
+                    String userChoice;
+                    while (true) {
+                        System.out.print("Would you like to add a product to the cart? (Y/N)");
+                        userChoice = scanner.nextLine().trim();
+                        if (userChoice.equalsIgnoreCase("y") || userChoice.equalsIgnoreCase("n")) {
+                            break;
+                        }
+                        System.out.println("Invalid input. Enter Y or N");
+                    }
+                    if (userChoice.equalsIgnoreCase("y")) {
+                        addProduct(scanner);
+                        return;
+                    }
+
+
+                }
+                case 2 -> {
+                    System.out.println("Search by Product ID");
+                }
+                case 3 -> {
+                    System.out.println("Back to Home Screen");
+                    return;
+                }
+                default -> System.out.println("Invalid choice!");
+
+            }
+        }
     }
 
     /**
      * Shows the contents of the cart, calculates the total,
      * and offers the option to check out.
      */
-    public static void cartScreen(ArrayList<Product> cart, Scanner scanner) {
+    public static void cartScreen(Map<Product, Integer> cart, Scanner scanner) {
         // TODO:
         //   • list each product in the cart
         //   • compute the total cost
@@ -141,6 +182,29 @@ public class Store {
                                 double totalAmount,
                                 Scanner scanner) {
         // TODO: implement steps listed above
+    }
+
+    public static void addProduct(Scanner scanner) {
+        while (true) {
+            System.out.print("Enter Product ID (or X to cancel): ");
+            String productID = scanner.nextLine().trim();
+            if (productID.equalsIgnoreCase("X")) {
+                return;
+            }
+            Product product = inventory.get(productID);
+
+            if (product == null) {
+                System.out.println("Product ID does not exist!");
+                continue;
+            }
+            cart.put(product, cart.getOrDefault(product, 0) + 1);
+
+            System.out.println("Product " + product.getName() + " has been added!");
+
+            System.out.println("Would you like to add another product to the cart? (Y/N)");
+            String userChoice = scanner.nextLine();
+            if (userChoice.equalsIgnoreCase("n")) break;
+        }
     }
 
     /**

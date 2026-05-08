@@ -16,8 +16,9 @@ import java.util.Scanner;
  */
 public class Store {
 
-    // Create lists for inventory and the shopping cart
+    // Stores product ID and product
     private static Map<String, Product> inventory = new HashMap<>();
+    // Stores Product ID and quantity
     private static Map<String, Integer> cart = new HashMap<>();
 
     // Reused code from Ledger Application
@@ -31,7 +32,7 @@ public class Store {
 
 
         // Load inventory from the data file (pipe-delimited: id|name|price)
-        loadInventory("products.csv");
+        loadInventory(FILE_NAME);
 
         // Main menu loop
         Scanner scanner = new Scanner(System.in);
@@ -62,6 +63,7 @@ public class Store {
     }
 
     /**
+     * Checks if products.csv exists.
      * Reads product data from a file and populates the inventory list.
      * File format (pipe-delimited):
      * id|name|price
@@ -132,6 +134,7 @@ public class Store {
             scanner.nextLine();
 
             switch (choice) {
+                // Displays all products
                 case 1 -> {
                     System.out.println("All Products");
                     for (Map.Entry<String, Product> entry : inventory.entrySet()) {
@@ -153,6 +156,7 @@ public class Store {
 
 
                 }
+                // Search by specific product ID
                 case 2 -> {
                     System.out.println("Search by Product ID");
                     System.out.print("Enter Product ID (or X to cancel): ");
@@ -197,11 +201,6 @@ public class Store {
      * and offers the option to check out.
      */
     public static void cartScreen(Map<String, Integer> cart, Scanner scanner) {
-        // TODO:
-        //   • list each product in the cart
-        //   • compute the total cost
-        //   • ask the user whether to check out (C) or return (X)
-        //   • if C, call checkOut(cart, totalAmount, scanner)
 
         while (true) {
             System.out.println("Welcome to the Cart Screen!");
@@ -215,6 +214,7 @@ public class Store {
             switch (choice) {
                 case 1 -> {
                     if (inventory.isEmpty()) return;
+                    // Loops through cart to calculate total
                     double total = 0;
                     for (Map.Entry<String, Integer> entry : cart.entrySet()) {
                         Product product = inventory.get(entry.getKey());
@@ -257,10 +257,11 @@ public class Store {
 
     /**
      * Handles the checkout process:
-     * 1. Confirm that the user wants to buy.
-     * 2. Accept payment and calculate change.
-     * 3. Display a simple receipt.
-     * 4. Clear the cart.
+     * Makes sure the cart isn't empty
+     * Calculates total
+     * Accept payment and calculate change.
+     * Display a simple receipt.
+     * Clear the cart.
      */
     public static void checkOut(Scanner scanner) {
 
@@ -268,6 +269,7 @@ public class Store {
             System.out.println("Cart is empty!");
             return;
         }
+        // Loops through cart to get total.
         double total = 0;
         for (Map.Entry<String, Integer> entry : cart.entrySet()) {
             Product product = inventory.get(entry.getKey());
@@ -278,6 +280,11 @@ public class Store {
 
         double payment = 0;
 
+        /**
+         * Makes sure the input is a number
+         * The payment is greater than 0
+         * Payment is enough to cover total
+         */
         while (true) {
             if (!scanner.hasNextDouble()) {
                 System.out.println("Enter a valid number!");
@@ -298,10 +305,15 @@ public class Store {
 
         }
 
+        // Prints change
         double change = payment - total;
         System.out.printf("The change is %.2f\n", change);
         System.out.println("Thank you for shopping!\n\n");
 
+        /**
+         * Prints receipt for user
+         * Includes the header "Receipt with current date and time formatted"
+         */
         LocalDateTime dateTime = LocalDateTime.now();
         String formattedDateTime = dateTime.format(DATETIME_FMT);
         System.out.println("Receipt " + formattedDateTime);
@@ -350,6 +362,12 @@ public class Store {
             }
             quantity = scanner.nextInt();
             scanner.nextLine();
+
+            /**
+             * Checks if quantity is 0 to remove the item completely from cart.
+             * Prints quantity went from x to y with the product details.
+             * checks if quantity even changed.
+             */
             if (quantity == 0) {
                 cart.remove(productID);
                 System.out.println(product.getName() + " removed from cart");
@@ -377,15 +395,18 @@ public class Store {
         while (true) {
             System.out.print("Enter Product ID (or X to cancel): ");
             String productID = scanner.nextLine().trim();
+            // If x go back to Product screen
             if (productID.equalsIgnoreCase("X")) {
                 return;
             }
             Product product = inventory.get(productID);
 
+            // Checks if the product created is null
             if (product == null) {
                 System.out.println("Product ID does not exist!");
                 continue;
             }
+            // Adds product to cart product ID as key and with a quantity of 1 or current quantity + 1
             cart.put(product.getProductId(), cart.getOrDefault(product.getProductId(), 0) + 1);
 
             System.out.println("Product " + product.getName() + " has been added!");

@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -17,7 +19,7 @@ public class Store {
 
         // Create lists for inventory and the shopping cart
         ArrayList<Product> inventory = new ArrayList<>();
-        ArrayList<Product> cart = new ArrayList<>();
+        Map<Product, Integer> cart = new HashMap<>();
         final String FILE_NAME = "products.csv";
 
         // Load inventory from the data file (pipe-delimited: id|name|price)
@@ -42,8 +44,8 @@ public class Store {
             scanner.nextLine();                     // clear newline
 
             switch (choice) {
-                case 1 -> displayProducts(inventory, cart, scanner);
-                case 2 -> displayCart(cart, scanner);
+                case 1 -> productsScreen(inventory, cart, scanner);
+                case 2 -> cartScreen(cart, scanner);
                 case 3 -> System.out.println("Thank you for shopping with us!");
                 default -> System.out.println("Invalid choice!");
             }
@@ -110,18 +112,17 @@ public class Store {
      * Displays all products and lets the user add one to the cart.
      * Typing X returns to the main menu.
      */
-    public static void displayProducts(ArrayList<Product> inventory,
-                                       ArrayList<Product> cart,
-                                       Scanner scanner) {
-        // TODO: show each product (id, name, price),
-        //       prompt for an id, find that product, add to cart
+    public static void productsScreen(ArrayList<Product> inventory,
+                                      ArrayList<Product> cart,
+                                      Scanner scanner) {
+        System.out.println();
     }
 
     /**
      * Shows the contents of the cart, calculates the total,
      * and offers the option to check out.
      */
-    public static void displayCart(ArrayList<Product> cart, Scanner scanner) {
+    public static void cartScreen(ArrayList<Product> cart, Scanner scanner) {
         // TODO:
         //   • list each product in the cart
         //   • compute the total cost

@@ -17,7 +17,7 @@ public class Store {
 
     // Create lists for inventory and the shopping cart
     private static Map<String, Product> inventory = new HashMap<>();
-    private static Map<Product, Integer> cart = new HashMap<>();
+    private static Map<String, Integer> cart = new HashMap<>();
     private static final String FILE_NAME = "products.csv";
 
     public static void main(String[] args) {
@@ -114,7 +114,7 @@ public class Store {
      * Typing X returns to the main menu.
      */
     public static void productsScreen(Map<String, Product> inventory,
-                                      Map<Product, Integer> cart,
+                                      Map<String, Integer> cart,
                                       Scanner scanner) {
         while (true) {
             System.out.println("Welcome to the Product Screen!");
@@ -188,7 +188,7 @@ public class Store {
      * Shows the contents of the cart, calculates the total,
      * and offers the option to check out.
      */
-    public static void cartScreen(Map<Product, Integer> cart, Scanner scanner) {
+    public static void cartScreen(Map<String, Integer> cart, Scanner scanner) {
         // TODO:
         //   • list each product in the cart
         //   • compute the total cost
@@ -196,7 +196,7 @@ public class Store {
         //   • if C, call checkOut(cart, totalAmount, scanner)
 
         while (true) {
-            System.out.println("Welcome to the Product Screen!");
+            System.out.println("Welcome to the Cart Screen!");
             System.out.println("1. View Cart");
             System.out.println("2. Edit product quantity by Product ID");
             System.out.println("3. Checkout");
@@ -207,10 +207,15 @@ public class Store {
             switch (choice) {
                 case 1 -> {
                     if (inventory.isEmpty()) return;
-
-                    for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
-                        System.out.println(entry.getValue());
+                    double total = 0;
+                    for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+                        Product product = inventory.get(entry.getKey());
+                        System.out.println(product);
+                        System.out.println("Quantity: " + entry.getValue());
+                        int quantity = entry.getValue();
+                        total += product.getPrice() * quantity;
                     }
+                    System.out.println("Total: " + total);
                     String userChoice;
                     while (true) {
                         System.out.print("Would you like to edit the quantity of the products? (Y/N)");
@@ -221,13 +226,23 @@ public class Store {
                         System.out.println("Invalid input. Enter Y or N");
                     }
                     if (userChoice.equalsIgnoreCase("y")) {
+                        editQuantity(scanner);
                         return;
                     }
                 }
                 case 2 -> {
-                    System.out.println("Edit product quantity");
-
+                    System.out.println("Edit product quantity by product ID");
+                    editQuantity(scanner);
+                    return;
                 }
+                case 3 -> {
+                    //Checkout
+                }
+                case 4 -> {
+                    System.out.println("Back to Home Screen");
+                    return;
+                }
+                default -> System.out.println("Invalid choice!");
             }
         }
     }
@@ -245,10 +260,58 @@ public class Store {
         // TODO: implement steps listed above
     }
 
-
+    /**
+     * Allows user to change the quantity of the products in cart.
+     *
+     * @param scanner
+     */
     public static void editQuantity(Scanner scanner) {
+        // Loops to prompt user to enter ID or return to home screen
+        while (true) {
+            System.out.print("Enter Product ID (or X to cancel): ");
+            String productID = scanner.nextLine().trim();
+            if (productID.equalsIgnoreCase("X")) {
+                return;
+            }
+            if (!cart.containsKey(productID)) {
+                System.out.println("Product does not exist in cart!");
+                System.out.println("Please enter a valid product ID!");
+                continue;
+            }
+            Product product = inventory.get(productID);
+            System.out.println(product);
+            System.out.println("Quantity: " + cart.get(productID));
+            int unchangedQuantity = cart.get(productID);
+            int quantity = unchangedQuantity;
+            // Prompts user to enter valid input
+            while (true) {
+                System.out.print("What would you like the quantity to be: ");
+                if (!scanner.hasNextInt()) {
+                    System.out.print("Please enter a number above 0");
+                    scanner.nextLine();                 // discard bad input
+                    continue;
+                }
+                break;
+            }
+            quantity = scanner.nextInt();
+            scanner.nextLine();
+            if (quantity == 0) {
+                cart.remove(productID);
+                System.out.println(product.getName() + " removed from cart");
+            } else if (unchangedQuantity != quantity) {
+                cart.put(productID, quantity);
+                System.out.println(product.getName() + " quantity changed from "
+                        + unchangedQuantity + " to " + quantity);
+            } else {
+                System.out.println("Quantity did not change!");
+            }
 
+            System.out.print("Would you like to change another product quantity? (Y/N) ");
+            String userChoice = scanner.nextLine().trim();
+            if (userChoice.equalsIgnoreCase("n")) break;
+        }
     }
+
 
     /**
      * Allows user to add products to cart
@@ -268,7 +331,7 @@ public class Store {
                 System.out.println("Product ID does not exist!");
                 continue;
             }
-            cart.put(product, cart.getOrDefault(product, 0) + 1);
+            cart.put(product.getProductId(), cart.getOrDefault(product.getProductId(), 0) + 1);
 
             System.out.println("Product " + product.getName() + " has been added!");
 
@@ -295,4 +358,5 @@ public class Store {
         }
     }
 }
+
 

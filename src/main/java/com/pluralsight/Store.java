@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -17,7 +19,13 @@ public class Store {
     // Create lists for inventory and the shopping cart
     private static Map<String, Product> inventory = new HashMap<>();
     private static Map<String, Integer> cart = new HashMap<>();
+
+    // Reused code from Ledger Application
     private static final String FILE_NAME = "products.csv";
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static final String TIME_PATTERN = "HH:mm:ss";
+    private static final String DATETIME_PATTERN = DATE_PATTERN + " " + TIME_PATTERN;
+    private static final DateTimeFormatter DATETIME_FMT = DateTimeFormatter.ofPattern(DATETIME_PATTERN);
 
     public static void main(String[] args) {
 
@@ -292,8 +300,19 @@ public class Store {
 
         double change = payment - total;
         System.out.printf("The change is %.2f\n", change);
-        System.out.println("Thank you for shopping!");
+        System.out.println("Thank you for shopping!\n\n");
 
+        LocalDateTime dateTime = LocalDateTime.now();
+        String formattedDateTime = dateTime.format(DATETIME_FMT);
+        System.out.println("Receipt " + formattedDateTime);
+        for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+            Product product = inventory.get(entry.getKey());
+            System.out.println(product);
+        }
+        System.out.printf("Total is %.2f\n", total);
+        System.out.printf("Payment amount is %.2f\n", payment);
+        System.out.printf("Change amount is %.2f\n", change);
+        cart.clear();
     }
 
     /**

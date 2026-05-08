@@ -58,13 +58,23 @@ Follow these steps to get your application running within IntelliJ IDEA:
 - Any additional libraries or frameworks used in the project.
 
 ## Demo
-
-<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 35 05 AM" src="https://github.com/user-attachments/assets/d43f5176-c9e7-45f6-96de-279490ed8689" />
-<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 34 48 AM" src="https://github.com/user-attachments/assets/93358b21-65df-45f9-bb92-793dc89c2e9f" />
-<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 34 33 AM" src="https://github.com/user-attachments/assets/179f6d89-67f7-4d00-9f3d-22dadad8b2de" />
-<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 34 05 AM" src="https://github.com/user-attachments/assets/446c67e6-379f-4725-ac95-d438b0b2ee45" />
-<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 33 56 AM" src="https://github.com/user-attachments/assets/2b7c7f37-2b3e-43a6-9991-74ab1631b279" />
+Home Screen
 <img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 33 46 AM" src="https://github.com/user-attachments/assets/8e6bdeb3-9807-417c-8e0e-2b708de2266b" />
+Product Screen
+<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 33 56 AM" src="https://github.com/user-attachments/assets/2b7c7f37-2b3e-43a6-9991-74ab1631b279" />
+Products fully loaded
+<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 34 05 AM" src="https://github.com/user-attachments/assets/446c67e6-379f-4725-ac95-d438b0b2ee45" />
+Added added to cart
+<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 34 33 AM" src="https://github.com/user-attachments/assets/179f6d89-67f7-4d00-9f3d-22dadad8b2de" />
+Cart Screen and Products in cart
+<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 34 48 AM" src="https://github.com/user-attachments/assets/93358b21-65df-45f9-bb92-793dc89c2e9f" />
+Full Checked Out
+<img width="1920" height="1080" alt="Screenshot 2026-05-08 at 3 35 05 AM" src="https://github.com/user-attachments/assets/d43f5176-c9e7-45f6-96de-279490ed8689" />
+
+
+
+
+
 
 
 ## Future Work

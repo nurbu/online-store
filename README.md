@@ -1,17 +1,36 @@
-# Project Title
+# Online-Store
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain
-the main functionality and what problems it aims to solve.
+The Online Store is a CLI application which enables user to do many things such as look through the store's inventory
+by either choosing to see all the products or a specific one using it's product ID. A user can also then add the
+products
+they like to the cart. Then once they finalized on what is in the cart they can then check out and pay in cash and then
+they
+lastly, they will be given a receipt of with everything details to all the products they've just bought, total, payment,
+and change.
 
 ## User Stories
 
 List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I
 want [some goal] so that [some reason]."
 
-- As a user, I want to be able to input my data, so that the application can process it accordingly.
-- As a user, I want to receive immediate feedback, so I can understand what to do next.
+- Task: Create a product class that stores all properties defined in the Products.csv
+- Task: Use the products.csv file to load the store's products into the inventory HashMap.
+- As a customer, I want to have a sub-menu within the Products screen to choose how I browse, so that I can decide
+  between viewing everything and searching for a specific item.
+  -As a customer, I want to have the option to view all products and then add them to cart, so I can browse see
+  everything and make my decision.
+  -As a customer, I want to have the option of searching by Product ID and adding to cart, so I can quickly check if
+  that product is there and add to cart.
+- Task: Create a helper function to handle asking if user would like to add a product to the cart.
+- As a customer, I want to have a sub-menu for Cart for viewing what's in my cart or changing the quantity by ID or
+  checking out or returning home.
+- As a customer, I want to view the items and totla in my car, so that I can review my order before buying.
+- As a customer, I want to be able to edit the quantity of my items in my cart right away without checking out my cart.
+- Task: Create a helper function to edit quantity by product ID.
+- As a customer, I want to be able to checkout the products have in my cart, so I can fully buy them.
+- As a customer, I want to have a sales receipt after checkout, so that I can have a record of my purchase.
 
 ## Setup
 
@@ -49,8 +68,8 @@ like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of you
 
 Outline potential future enhancements or functionalities you might consider adding:
 
-- Additional feature to be developed.
-- Improvement of current functionalities.
+- I would love to be able to create a receipts folder.
+- Then add put all the receipts created into that folder.
 
 ## Resources
 
@@ -59,15 +78,10 @@ List resources such as tutorials, articles, or documentation that helped you dur
 - [Java Programming Tutorial](https://www.example.com)
 - [Effective Java](https://www.example.com)
 
-## Team Members
-
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
-
 ## Thanks
 
 Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
+- Thank you to [Raymond] for continuous support and guidance.
 - A special thanks to all teammates for their dedication and teamwork.
  

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -150,6 +149,7 @@ public class Store {
                     System.out.println("Search by Product ID");
                     System.out.print("Enter Product ID (or X to cancel): ");
                     String productID = scanner.nextLine().trim();
+                    // If cancel search then returns to product screen
                     if (productID.equalsIgnoreCase("X")) {
                         return;
                     }
@@ -236,7 +236,7 @@ public class Store {
                     return;
                 }
                 case 3 -> {
-                    //Checkout
+                    checkOut(scanner);
                 }
                 case 4 -> {
                     System.out.println("Back to Home Screen");
@@ -254,10 +254,46 @@ public class Store {
      * 3. Display a simple receipt.
      * 4. Clear the cart.
      */
-    public static void checkOut(ArrayList<Product> cart,
-                                double totalAmount,
-                                Scanner scanner) {
-        // TODO: implement steps listed above
+    public static void checkOut(Scanner scanner) {
+
+        if (cart.isEmpty()) {
+            System.out.println("Cart is empty!");
+            return;
+        }
+        double total = 0;
+        for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+            Product product = inventory.get(entry.getKey());
+            total += product.getPrice() * entry.getValue();
+        }
+        System.out.println("Total: " + total);
+        System.out.print("Please enter payment amount: ");
+
+        double payment = 0;
+
+        while (true) {
+            if (!scanner.hasNextDouble()) {
+                System.out.println("Enter a valid number!");
+                scanner.nextLine();                 // discard bad input
+                continue;
+            }
+            payment = scanner.nextDouble();
+            scanner.nextLine();
+            if (payment == 0) {
+                System.out.println("Please enter a amount greater than zero!");
+                continue;
+            }
+            if (payment < total) {
+                System.out.println("The payment is not enough!");
+                continue;
+            }
+            break;
+
+        }
+
+        double change = payment - total;
+        System.out.printf("The change is %.2f\n", change);
+        System.out.println("Thank you for shopping!");
+
     }
 
     /**

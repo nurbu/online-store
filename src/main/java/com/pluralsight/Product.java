@@ -3,23 +3,23 @@ package com.pluralsight;
 public class Product {
 
     // Product Details
-    
-    private int id;
+
+    private String productId;
     private String name;
     private double price;
 
-    public Product(int id, String name, double price) {
-        this.id = id;
+    public Product(String productId, String name, double price) {
+        this.productId = productId;
         this.name = name;
         this.price = price;
     }
 
-    public int getId() {
-        return id;
+    public String getProductId() {
+        return productId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.productId = productId;
     }
 
     public String getName() {

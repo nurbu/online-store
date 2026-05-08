@@ -1,5 +1,9 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,6 +18,7 @@ public class Store {
         // Create lists for inventory and the shopping cart
         ArrayList<Product> inventory = new ArrayList<>();
         ArrayList<Product> cart = new ArrayList<>();
+        final String FILE_NAME = "products.csv";
 
         // Load inventory from the data file (pipe-delimited: id|name|price)
         loadInventory("products.csv", inventory);
@@ -23,8 +28,8 @@ public class Store {
         int choice = -1;
         while (choice != 3) {
             System.out.println("\nWelcome to the Online Store!");
-            System.out.println("1. Show Products");
-            System.out.println("2. Show Cart");
+            System.out.println("1. Products");
+            System.out.println("2. Cart");
             System.out.println("3. Exit");
             System.out.print("Your choice: ");
 
@@ -55,8 +60,50 @@ public class Store {
      * A17|Wireless Mouse|19.99
      */
     public static void loadInventory(String fileName, ArrayList<Product> inventory) {
-        // TODO: read each line, split on "|",
-        //       create a Product object, and add it to the inventory list
+
+        File file = new File(fileName);
+
+        if (!file.exists()) {
+            try {
+                // Creates new "products.csv" and lets user know.
+                if (file.createNewFile()) {
+                    System.out.println("New \"products.csv\" file created");
+                }
+            } catch (IOException e) {
+                // Catches any errors when creating file.
+                System.out.println("Error creating file: " + e.getMessage());
+            }
+            // Prevents reading file if file was just created.
+            return;
+        }
+        // Uses try-with-resources to auto-close BufferReader
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Catches bad lines and skips them to prevent exception.
+                try {
+
+                    String[] values = line.split("\\|");
+
+                    if (values.length != 3) {
+                        throw new Exception("Missing field");
+                    }
+
+                    String productID = values[0];
+                    String name = values[1];
+                    double transactionAmount = parseDouble(values[2]);
+
+                    inventory.add(new Product(productID, name, transactionAmount));
+                }
+                // Catches all general errors within each transaction.
+                catch (Exception e) {
+                    System.out.println("Skipping bad line: " + line + "(" + e.getMessage() + ")");
+                }
+            }
+            // catches file not being found or can't read, etc....
+        } catch (IOException e) {
+            System.out.println("Error reading file:  " + e.getMessage());
+        }
     }
 
     /**
@@ -103,6 +150,23 @@ public class Store {
     public static Product findProductById(String id, ArrayList<Product> inventory) {
         // TODO: loop over the list and compare ids
         return null;
+    }
+
+    /**
+     * Parse double string
+     * if s is empty throws Exception with Custom message (skipped by user)
+     * Uses try/catch to check if user input valid.
+     * if s is not a number or in a Double format throws Exception
+     */
+    private static Double parseDouble(String s) {
+        if (s.isEmpty()) {
+            throw new IllegalArgumentException("Input can't be empty");
+        }
+        try {
+            return Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid number: " + s);
+        }
     }
 }
 

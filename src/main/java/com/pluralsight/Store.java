@@ -194,6 +194,42 @@ public class Store {
         //   • compute the total cost
         //   • ask the user whether to check out (C) or return (X)
         //   • if C, call checkOut(cart, totalAmount, scanner)
+
+        while (true) {
+            System.out.println("Welcome to the Product Screen!");
+            System.out.println("1. View Cart");
+            System.out.println("2. Edit product quantity by Product ID");
+            System.out.println("3. Checkout");
+            System.out.println("4. Back to Home Screen");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> {
+                    if (inventory.isEmpty()) return;
+
+                    for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
+                        System.out.println(entry.getValue());
+                    }
+                    String userChoice;
+                    while (true) {
+                        System.out.print("Would you like to edit the quantity of the products? (Y/N)");
+                        userChoice = scanner.nextLine().trim();
+                        if (userChoice.equalsIgnoreCase("y") || userChoice.equalsIgnoreCase("n")) {
+                            break;
+                        }
+                        System.out.println("Invalid input. Enter Y or N");
+                    }
+                    if (userChoice.equalsIgnoreCase("y")) {
+                        return;
+                    }
+                }
+                case 2 -> {
+                    System.out.println("Edit product quantity");
+
+                }
+            }
+        }
     }
 
     /**
@@ -207,6 +243,11 @@ public class Store {
                                 double totalAmount,
                                 Scanner scanner) {
         // TODO: implement steps listed above
+    }
+
+
+    public static void editQuantity(Scanner scanner) {
+
     }
 
     /**

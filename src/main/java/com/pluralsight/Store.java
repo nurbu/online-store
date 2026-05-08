@@ -110,7 +110,7 @@ public class Store {
     }
 
     /**
-     * Displays all products and lets the user add one to the cart.
+     * Displays all products or by product ID and lets the user add one to the cart.
      * Typing X returns to the main menu.
      */
     public static void productsScreen(Map<String, Product> inventory,
@@ -148,6 +148,31 @@ public class Store {
                 }
                 case 2 -> {
                     System.out.println("Search by Product ID");
+                    System.out.print("Enter Product ID (or X to cancel): ");
+                    String productID = scanner.nextLine().trim();
+                    if (productID.equalsIgnoreCase("X")) {
+                        return;
+                    }
+                    Product product = inventory.get(productID);
+
+                    if (product == null) {
+                        System.out.println("Product ID does not exist!");
+                        continue;
+                    }
+                    System.out.println(product);
+                    String userChoice;
+                    while (true) {
+                        System.out.print("Would you like to add a product to the cart? (Y/N)");
+                        userChoice = scanner.nextLine().trim();
+                        if (userChoice.equalsIgnoreCase("y") || userChoice.equalsIgnoreCase("n")) {
+                            break;
+                        }
+                        System.out.println("Invalid input. Enter Y or N");
+                    }
+                    if (userChoice.equalsIgnoreCase("y")) {
+                        addProduct(scanner);
+                        return;
+                    }
                 }
                 case 3 -> {
                     System.out.println("Back to Home Screen");
@@ -184,6 +209,11 @@ public class Store {
         // TODO: implement steps listed above
     }
 
+    /**
+     * Allows user to add products to cart
+     *
+     * @param scanner
+     */
     public static void addProduct(Scanner scanner) {
         while (true) {
             System.out.print("Enter Product ID (or X to cancel): ");
@@ -205,16 +235,6 @@ public class Store {
             String userChoice = scanner.nextLine();
             if (userChoice.equalsIgnoreCase("n")) break;
         }
-    }
-
-    /**
-     * Searches a list for a product by its id.
-     *
-     * @return the matching Product, or null if not found
-     */
-    public static Product findProductById(String id, ArrayList<Product> inventory) {
-        // TODO: loop over the list and compare ids
-        return null;
     }
 
     /**
